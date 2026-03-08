@@ -1,0 +1,124 @@
+@import "tailwindcss";
+
+@theme {
+  --color-black: #18181b;
+  --color-white: #fafafa;
+  --color-neo-yellow: #fccf2a;
+  --color-neo-pink: #f472b6;
+  --color-neo-babyb: #60a5fa;
+  --color-neo-blue: #1d3557;
+  --color-neo-green: #4ade80;
+  --color-neo-red: #e63946;
+  --color-neo-lemon: #f1faee;
+
+  --border-width-neobrutal: 4px;
+  --z-index-9998: 9998;
+  --z-index-9999: 9999;
+
+  --font-comic: "Comic Neue", cursive;
+  --font-caveat: "Caveat", cursive;
+}
+
+:root.dark {
+  --background: var(--color-black);
+  --foreground: var(--color-white);
+  --neo-border-color: var(--color-white);
+  --neo-shadow-color: var(--color-white);
+}
+
+:root.light {
+  --background: var(--color-white);
+  --foreground: var(--color-black);
+  --neo-border-color: var(--color-black);
+  --neo-shadow-color: var(--color-black);
+}
+
+@layer base {
+  html {
+    scroll-behavior: auto;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    @apply font-sans antialiased;
+    cursor: none;
+  }
+
+  * {
+    border-color: var(--neo-border-color);
+    border-radius: 0 !important;
+  }
+}
+
+@utility neo-shadow {
+  box-shadow: 4px 4px 0px 0px var(--neo-shadow-color);
+}
+
+@utility neo-shadow-lg {
+  box-shadow: 8px 8px 0px 0px var(--neo-shadow-color);
+}
+
+@utility neo-border {
+  border: var(--border-width-neobrutal) solid var(--neo-border-color);
+}
+
+@utility neo-button {
+  @apply px-6 py-3 bg-white border-4 border-black neo-shadow transition-all duration-100 font-bold uppercase;
+  &:hover {
+    @apply translate-x-[-2px] translate-y-[-2px] neo-shadow-lg;
+  }
+  &:active {
+    @apply translate-x-0 translate-y-0 neo-shadow;
+  }
+}
+
+/* Lenis CSS */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+@layer base {
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  * {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 20s linear infinite;
+}
+
+.animate-marquee-slow {
+  animation: marquee 40s linear infinite;
+}
