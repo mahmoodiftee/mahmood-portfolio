@@ -9,13 +9,15 @@ import { Linkedin, Github, Facebook } from 'lucide-react';
 import wink from '../assets/json/wink.json';
 import arrow from '../assets/json/arrow.json';
 import { useSmoothScroll } from '../context/SmoothScrollContext';
+import { useVisits } from '../hooks/useVisits';
 
 
 const Hero = () => {
-    const [currentTime, setCurrentTime] = useState('');
     const { theme } = useTheme();
     const lottieRef = useRef<any>(null);
     const { lenis } = useSmoothScroll();
+    const { count: visitCount, latestVisitor } = useVisits();
+    const [currentTime, setCurrentTime] = useState('');
 
     const handleScrollTo = (e: React.MouseEvent, id: string) => {
         if (lenis) {
@@ -153,11 +155,39 @@ const Hero = () => {
                     </div>
 
                     {/* Bottom Right Split: Inquiry & Socials */}
-                    <div className="flex flex-col sm:flex-row h-auto xl:h-[35%] min-h-[180px]">
+                    <div className="flex flex-col sm:flex-row h-auto xl:h-auto min-h-[200px]">
                         {/* Inquiry Cell */}
-                        <div className="flex-1 p-4 sm:p-12 border-b-4 sm:border-b-0 sm:border-r-4 border-(--neo-border-color) flex flex-col justify-center bg-neo-blue">
-                            <span className="text-lg font-black uppercase text-white mb-4 block">Local Time</span>
-                            <span className="text-3xl lg:text-5xl font-black text-white tracking-normal">{currentTime || '00:00:00'}</span>
+                        <div className="flex-1 p-4 sm:p-8 border-b-4 sm:border-b-0 sm:border-r-4 border-(--neo-border-color) flex flex-col justify-center bg-neo-blue relative group">
+                            <div className="relative z-10">
+                                <div className="flex flex-col gap-4">
+                                    <span className="text-lg font-black uppercase text-white opacity-70">Status</span>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-4 md:border-t md:border-white/20">
+                                        <div className="md:py-4">
+                                            <span className="text-xs font-bold uppercase text-white/60 block mb-1">Local Time</span>
+                                            <span className="text-xl lg:text-2xl 2xl:text-3xl font-black text-white tracking-normal">{currentTime || '00:00:00'}</span>
+                                        </div>
+                                        <div className="border-t border-white/20 pt-4 mt-0 md:border-t-0 md:border-l md:pt-4 md:pl-4">
+                                            <span className="text-xs font-bold uppercase text-white/60 block mb-1">Total Visits</span>
+                                            <span className="text-xl lg:text-2xl 2xl:text-3xl font-black text-white tracking-normal font-mono">
+                                                {visitCount !== null ? visitCount.toLocaleString().padStart(6, '0') : '------'}
+                                            </span>
+                                        </div>
+
+                                        {latestVisitor && (
+                                            <motion.div
+                                                initial={{ opacity: 0, y: 5 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                className="col-span-1 md:col-span-2 mt-2 border-t border-white/10 pt-2"
+                                            >
+                                                <span className="text-[10px] font-bold uppercase text-white/40 block">Recent Visit</span>
+                                                <span className="text-xs font-bold text-neo-yellow uppercase truncate block">
+                                                    {latestVisitor.city}, {latestVisitor.country}
+                                                </span>
+                                            </motion.div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         {/* Social Cell */}
